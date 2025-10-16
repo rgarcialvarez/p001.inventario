@@ -11,6 +11,17 @@ import modelos.Proveedor;
 
 public class Aplicacion {
 
+	private static final int SALIR = 0;
+	private static final int GESTION_CLIENTES = 1;
+	private static final int GESTION_PROVEEDORES = 2;
+	private static final int GESTION_PRODUCTOS = 3;
+	private static final int GESTION_FACTURACION = 4;
+	
+	private static final int CREAR = 1;
+	private static final int BUSCAR = 2;
+	private static final int ACTUALIZAR = 3;
+	private static final int ELIMINAR = 4;
+	
 	private static Scanner teclado;
 
 	public static void main(String[] args) {
@@ -21,9 +32,109 @@ public class Aplicacion {
 		List<Proveedor> proveedores = new ArrayList<>();
 		List<Producto> productos = new ArrayList<>();
 		List<Factura> facturas = new ArrayList<>();
-		
-		System.out.println("Hola Mundo");
 
+		int opcion;
+		int opcionSubMenu;
+		
+		do {
+			
+			do {
+
+				mostrarMenuPrincipal();
+				opcion = capturarNumeroEntero("Digite la operacion a realizar");
+
+				if (opcion < SALIR || opcion > GESTION_FACTURACION) {
+					
+					System.out.println("MENSAJE: Debe digitar un valor entre 0 y 4");
+				}
+				
+			} while (opcion < SALIR || opcion > GESTION_FACTURACION);
+
+			if(opcion == SALIR) {
+				break;
+			}
+			
+			switch (opcion) {
+			
+				case GESTION_CLIENTES: {
+					
+					do {
+
+						mostrarSubMenu("Clientes");
+						opcionSubMenu = capturarNumeroEntero("Digite la operacion a realizar");
+
+						if (opcionSubMenu < SALIR || opcionSubMenu > ELIMINAR) {
+							
+							System.out.println("MENSAJE: Debe digitar un valor entre 0 y 4");
+						}
+						
+					} while (opcionSubMenu < SALIR || opcionSubMenu > ELIMINAR);
+
+					if(opcionSubMenu == SALIR) {
+						break;
+					}
+					
+					switch(opcionSubMenu) {
+					
+					case CREAR: {
+						crearCliente(clientes);
+						break;
+					}
+					
+					case BUSCAR: {
+						break;
+					}
+					
+					case ACTUALIZAR: {
+						break;
+					}
+					
+					case ELIMINAR: {
+						break;
+					}
+					}
+					
+				}
+				
+				case GESTION_PROVEEDORES: {
+					
+					mostrarSubMenu("Proveedores");
+					break;
+				}
+				
+				case GESTION_PRODUCTOS: {
+					
+					mostrarSubMenu("Productos");
+					break;
+				}
+				
+				case GESTION_FACTURACION: {
+					
+					mostrarSubMenuFacturacion();
+					break;
+				}
+				
+			}
+			
+		} while (opcion != SALIR);
+
+	}
+
+	private static void crearCliente(List<Cliente> clientes) {
+		
+		System.out.println("--- Crear Cliente ---");
+		int numeroCedula;
+		
+		do {
+			numeroCedula = capturarNumeroEntero("Digite el numero de cedula del cliente nuevo");
+
+			if(numeroCedula <= 0) {
+				System.out.println("MENSAJE: La cedula debe ser un numero entero positivo");
+			}
+			
+		} while(numeroCedula <=0);
+		
+		
 	}
 
 	public static void mostrarMenuPrincipal() {
