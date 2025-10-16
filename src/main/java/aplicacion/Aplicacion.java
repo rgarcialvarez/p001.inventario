@@ -120,21 +120,81 @@ public class Aplicacion {
 
 	}
 
-	private static void crearCliente(List<Cliente> clientes) {
+	private static Cliente crearCliente(List<Cliente> clientes) {
 		
 		System.out.println("--- Crear Cliente ---");
+				
 		int numeroCedula;
+		String cedula="";
+		int numeroTelefono;
+		String telefono;
+		Cliente cliente;
 		
 		do {
 			numeroCedula = capturarNumeroEntero("Digite el numero de cedula del cliente nuevo");
 
 			if(numeroCedula <= 0) {
 				System.out.println("MENSAJE: La cedula debe ser un numero entero positivo");
+				numeroCedula = 0;
+				continue;
+			}
+			
+			cedula = String.valueOf(numeroCedula);
+			
+			cliente = buscarClientePorCedula(clientes, cedula);
+			
+			if(cliente != null) {
+				System.out.printf("MENSAJE: Ya existe otro cliente con este numero de cedula: %s.\n", numeroCedula);
+				numeroCedula = 0;
 			}
 			
 		} while(numeroCedula <=0);
 		
+		String nombre  = capturarCadenaCaracteres("Digite los nombres del cliente nuevo");
+		String apellido  = capturarCadenaCaracteres("Digite los apellidos del cliente nuevo");
 		
+		do {
+			
+		 numeroTelefono = capturarNumeroEntero("MENSAJE: Digite el numero de telefono del cliente nuevo");	
+		 
+		 
+		 if(numeroTelefono <=0) {
+			 System.out.println("MENSAJE: El numero de telefono debe ser valor positivo");
+		 }
+		 
+		 telefono = String.valueOf(numeroTelefono);
+		 
+		} while(numeroTelefono <=0);
+		
+		String direccion  = capturarCadenaCaracteres("Digite la direccion del cliente nuevo");
+
+		String correoElectronico;
+		
+		while(true) {
+			
+			correoElectronico = capturarCadenaCaracteres("Digite el correo electronico del cliente nuevo");
+			
+			if(!correoElectronicoValido(correoElectronico)) {
+				System.out.println("MENSAJE: Ha digitado un valor que no corresponde con un correo electronico");
+				continue;
+			}
+			break;
+		}
+		
+		cliente = new Cliente(cedula, nombre, apellido, telefono, direccion, correoElectronico);
+		
+		return cliente;
+	}
+
+	
+	private static Cliente buscarClientePorCedula(List<Cliente> clientes, String cedula) {
+		
+		for (Cliente cliente : clientes) {
+			if(cliente.getCedula().equals(cedula)) {
+				return cliente;
+			}
+		}				
+		return null;
 	}
 
 	public static void mostrarMenuPrincipal() {
@@ -211,5 +271,11 @@ public class Aplicacion {
 
 		}
 	}
+	
+	static boolean correoElectronicoValido(String correo) {
+		String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+		return correo.matches(regex);
+	}
+	
 
 }
