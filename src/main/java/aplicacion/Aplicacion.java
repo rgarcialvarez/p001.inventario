@@ -35,6 +35,7 @@ public class Aplicacion {
 
 		int opcion;
 		int opcionSubMenu;
+		Cliente cliente;
 		
 		do {
 			
@@ -77,11 +78,13 @@ public class Aplicacion {
 					switch(opcionSubMenu) {
 					
 					case CREAR: {
-						crearCliente(clientes);
+						cliente = crearCliente(clientes);
+						clientes.add(cliente);
 						break;
 					}
 					
 					case BUSCAR: {
+						cliente = buscarCliente(clientes);
 						break;
 					}
 					
@@ -118,6 +121,35 @@ public class Aplicacion {
 			
 		} while (opcion != SALIR);
 
+	}
+
+	private static Cliente buscarCliente(List<Cliente> clientes) {
+
+		int numeroCedula;
+		String cedula;
+		Cliente cliente;
+		
+		do {
+			numeroCedula = capturarNumeroEntero("Digite el numero de cedula del cliente nuevo");
+
+			if(numeroCedula <= 0) {
+				System.out.println("MENSAJE: La cedula debe ser un numero entero positivo");
+				numeroCedula = 0;
+				continue;
+			}
+			
+			cedula = String.valueOf(numeroCedula);
+			
+			cliente = buscarClientePorCedula(clientes, cedula);
+			
+			if(cliente != null) {
+				System.out.printf("MENSAJE: Ya existe otro cliente con este numero de cedula: %s.\n", numeroCedula);
+				numeroCedula = 0;
+			}
+			
+		} while(numeroCedula <=0);
+
+		return null;
 	}
 
 	private static Cliente crearCliente(List<Cliente> clientes) {
